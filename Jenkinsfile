@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.9.6-eclipse-temurin-17'
+        }
+    }
 
     stages {
 
@@ -11,29 +15,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building project...'
                 sh 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
                 sh 'mvn test'
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                echo 'Building Docker image...'
-                sh 'docker build -t student-app .'
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                echo 'Running container...'
-                sh 'docker run -d -p 8081:8080 student-app'
             }
         }
     }
