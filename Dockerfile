@@ -1,9 +1,8 @@
-FROM openjdk:17
+FROM jenkins/jenkins:lts
 
-WORKDIR /app
+USER root
 
-COPY target/*.jar app.jar
+RUN apt-get update && \
+    apt-get install -y maven docker.io
 
-EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","app.jar"]
+USER jenkins
